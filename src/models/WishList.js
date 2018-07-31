@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree';
+import { types, getParent, destroy } from 'mobx-state-tree';
 
 export const WishListItem = types
     .model({
@@ -15,6 +15,13 @@ export const WishListItem = types
         },
         changeImage(newImage) {
             self.image = newImage;
+        },
+        remove() {
+            // getParent(getParent(self)).remove(self);
+            // console.log(self);
+            // console.log(getParent(self));    // 第一層是observableArray
+            // console.log(getParent(self, 2)); // 第二層才是WishList
+            getParent(self, 2).remove(self);
         }
     }));
 
@@ -25,6 +32,10 @@ export const WishList = types
     .actions(self => ({
         add(item) {
             self.items.push(item)
+        },
+        remove(item) {
+            // self.items.splice(self.items.indexOf(item), 1);
+            destroy(item);
         }
     }))
     .views(self => ({

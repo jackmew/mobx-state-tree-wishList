@@ -23,8 +23,3 @@ const wishList = WishList.create({
 makeInspectable(wishList);
 
 ReactDOM.render(<App wishList={wishList} />, document.getElementById('root'));
-
-setInterval(() => {
-    wishList.items[0].changePrice(wishList.items[0].price + 1)
-    console.log(wishList.items[0].price);
-}, 1000);
