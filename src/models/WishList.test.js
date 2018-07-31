@@ -1,4 +1,5 @@
 import { getSnapshot, onSnapshot, onPatch } from 'mobx-state-tree';
+import { reaction } from 'mobx';
 import { WishListItem, WishList } from "./WishList";
 
 it('can create a instance of model', () => {
@@ -104,4 +105,32 @@ it('can add a wish - 2', () => {
     expect(list.items[0].price).toBe(20);
 
     expect(patches).toMatchSnapshot();
+});
+
+it('can calcuate the total price of a wishlist', () => {
+    const list = WishList.create({
+        items: [
+            {
+                name: 'Machine Gun Preacher',
+                price: 7.35,
+                image: 'https://37ugp72ofspp25ltkb3ajwvg-wpengine.netdna-ssl.com/wp-content/uploads/e959b2b9c52eaa3ece94015db454b0a6.jpg'
+            },
+            {
+                name: 'Lego MindStorm EV3',
+                price: 349.95,
+                image: 'https://www.robotshop.com/media/catalog/product/cache/image/900x900/9df78eab33525d08d6e5fb8d27136e95/l/e/lego-mindstorms-ev3-us-version_1.jpg'
+            }
+        ]
+    });
+    expect(list.totalPrice).toBe(357.3);
+
+    let changed = 0;
+    reaction(() => list.totalPrice, () => changed++);
+
+    expect(changed).toBe(0);
+    console.log(list.totalPrice);
+    list.items[0].changeName('Test');
+    expect(changed).toBe(0);
+    list.items[0].changePrice(10);
+    expect(changed).toBe(1)
 });
