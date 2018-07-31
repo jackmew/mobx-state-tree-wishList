@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`can add a wish - 2 1`] = `
+Array [
+  Object {
+    "op": "add",
+    "path": "/items/0",
+    "value": Object {
+      "image": "",
+      "name": "Chesterton",
+      "price": 10,
+    },
+  },
+  Object {
+    "op": "replace",
+    "path": "/items/0/price",
+    "value": 20,
+  },
+]
+`;
